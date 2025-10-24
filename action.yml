@@ -10,3 +10,7 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
+
+branding:
+  icon: alert-triangle
+  color: orange
