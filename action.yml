@@ -1,0 +1,12 @@
+name: Hidden Characters
+description: Identify files within your GitHub project that contain hidden characters
+
+inputs:
+  path: # id of input
+    description: The path to recursively check files within
+    required: false
+    default: '/'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
