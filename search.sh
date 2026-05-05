@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Prerequisite check: Ensure Perl is installed
+if ! command -v perl &> /dev/null; then
+    echo "::error title=Missing Dependency::Perl is not installed on this runner. The hidden-characters action requires Perl to run."
+    exit 1
+fi
+
 # Get the path from the GitHub Action input, defaulting to current directory
 SEARCH_PATH="${1:-.}"
 
