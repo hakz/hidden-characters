@@ -14,7 +14,7 @@ none.
 ## Example usage
 
 ```yaml
-uses: actions/hidden-characters@v1
+uses: hakz/hidden-characters@v1.0
 with:
-  path: "/site"
+  path: "/site" #defaults to "."
 ```
