@@ -5,11 +5,14 @@ inputs:
   path: # id of input
     description: The path to recursively check files within
     required: false
-    default: '/'
+    default: '.'
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "composite"
+  steps:
+    - name: Run hidden character search
+      shell: bash
+      run: ${{ github.action_path }}/search.sh "${{ inputs.path }}"
 
 branding:
   icon: alert-triangle
