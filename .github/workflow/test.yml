@@ -1,0 +1,49 @@
+name: Test Action
+
+# Run this test every time you push to main or open a Pull Request
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test-action:
+    name: Run hidden-character tests
+    # You can test on ubuntu, macos, or windows to ensure cross-platform compatibility
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup test environments
+        run: |
+          mkdir -p tests/clean tests/dirty
+          
+          # Create a perfectly clean file
+          echo "This is a normal file with normal text." > tests/clean/good.txt
+          
+          # Create a dirty file containing a Zero-Width Space (UTF-8: E2 80 8B)
+          echo -e "This is a dirty \xE2\x80\x8B file." > tests/dirty/bad.txt
+
+      - name: Test 1 - Clean Directory (Should Pass)
+        # using "./" tells GitHub to run the action.yml located in the root of this repo
+        uses: ./ 
+        with:
+          path: 'tests/clean'
+
+      - name: Test 2 - Dirty Directory (Should Fail)
+        id: test_dirty
+        # We EXPECT this step to fail. This flag prevents the whole workflow from crashing immediately.
+        continue-on-error: true 
+        uses: ./
+        with:
+          path: 'tests/dirty'
+
+      - name: Verify Test 2 Failed Correctly
+        # If the previous step succeeded, it means your script missed the hidden character!
+        if: steps.test_dirty.outcome == 'success'
+        run: |
+          echo "::error::Test failed! The action passed when it should have caught the hidden character."
+          exit 1
