@@ -16,7 +16,7 @@ echo "Scanning $SEARCH_PATH for hidden characters..."
 find "$SEARCH_PATH" -type f -not -path "*/\.git/*" -exec perl -e '
     $found = 0;
     while (<>) {
-        if (/[\x{200B}-\x{200F}\x{202A}-\x{202E}\x{FEFF}]/) {
+        if (/[^\t\n\r[:print:]]/) {
             print "Hidden character found in $ARGV at line $.\n";
             $found = 1;
         }
